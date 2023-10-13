@@ -1,5 +1,6 @@
 name: Start Deploy To Dev Environment
 run-name: CreateTodayBranch 🚀
+on: workflow_dispatch
 
 jobs:
   MergeBranch:
