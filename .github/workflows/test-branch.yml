@@ -1,12 +1,12 @@
-name: TodayDevBranchCreate
-run-name: TodayDevBranchCreate 🚀
+name: CreateDevBranchToday
+run-name: CreateDevBranchToday 🚀
   #on:
   #  schedule:
   #    - cron: '0 0 * * *' # JST 00:00 (毎日)
 on: workflow_dispatch
 
 jobs:
-  MergeBranch:
+  CreateBranch:
     timeout-minutes: 1
     runs-on: ubuntu-22.04
     steps:
@@ -20,6 +20,7 @@ jobs:
       - name: Check today Branch
         id: check_branch
         run: |
+          echo $(git show-ref --quiet "refs/heads/${{ env.BRANCH_NAME }}")
           if git show-ref --quiet "refs/heads/${{ env.BRANCH_NAME }}"; then
             echo "Today Branch exists."
           else
