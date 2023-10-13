@@ -17,20 +17,15 @@ jobs:
       - name: Check today Branch
         id: check_branch
         run: |
-          BRANCH_NAME=
-          if git show-ref --quiet "refs/heads/$BRANCH_NAME"; then
+          if git show-ref --quiet "refs/heads/${{ env.BRANCH_NAME }}"; then
             echo "Today Branch exists."
-            echo "::set-output name=branch_exists::true"
           else
-            echo "Branch $BRANCH_NAME does not exist."
-            echo "::set-output name=branch_exists::false"
+            echo "Branch ${{ env.BRANCH_NAME }} does not exist."
 
             BASE_BRANCH="master"  # 作成元のブランチを指定
 
-            echo $BRANCH_NAME
-
             # 新しいブランチを作成
-            git checkout -b $BRANCH_NAME $BASE_BRANCH
+            git checkout -b ${{ env.BRANCH_NAME }} $BASE_BRANCH
 
             # 新しいブランチをリモートリポジトリにプッシュ
             git push origin $BRANCH_NAME
