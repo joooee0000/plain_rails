@@ -1,8 +1,9 @@
 name: TodayDevBranchCreate
 run-name: TodayDevBranchCreate 🚀
-on:
-  schedule:
-    - cron: '0 0 * * *' # JST 00:00 (毎日)
+  #on:
+  #  schedule:
+  #    - cron: '0 0 * * *' # JST 00:00 (毎日)
+on: workflow_dispatch
 
 jobs:
   MergeBranch:
