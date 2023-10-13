@@ -20,7 +20,8 @@ jobs:
       - name: Check today Branch
         id: check_branch
         run: |
-          echo $(git show-ref "refs/heads/${{ env.BRANCH_NAME }}")
+          RESULT=$(git show-ref "refs/heads/${{ env.BRANCH_NAME }}")
+          echo "$RESULT"
           if git show-ref --quiet "refs/heads/${{ env.BRANCH_NAME }}"; then
             echo "Today Branch exists."
           else
