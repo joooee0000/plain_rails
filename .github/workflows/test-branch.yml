@@ -1,4 +1,4 @@
-name: Start Deploy To Dev Environment
+name: TestBranchCreate
 run-name: CreateTodayBranch 🚀
 on: workflow_dispatch
 
