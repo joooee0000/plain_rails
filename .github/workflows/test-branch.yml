@@ -12,7 +12,7 @@ jobs:
       - name: Get Date
         id: date
         run: |
-          TODAY_BRANCH="dev-$(TZ=Asia/Tokyo date + '%m%d')"
+          TODAY_BRANCH="dev-$(TZ=Asia/Tokyo date '+%m%d')"
           echo "::set-output name=branch_name::$TODAY_BRANCH"
         shell: bash
       - name: Check today Branch
