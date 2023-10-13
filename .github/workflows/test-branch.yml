@@ -1,6 +1,8 @@
-name: TestBranchCreate
-run-name: CreateTodayBranch 🚀
-on: workflow_dispatch
+name: TodayDevBranchCreate
+run-name: TodayDevBranchCreate 🚀
+on:
+  schedule:
+    - cron: '0 0 * * *' # JST 00:00 (毎日)
 
 jobs:
   MergeBranch:
@@ -22,12 +24,9 @@ jobs:
           else
             echo "Branch ${{ env.BRANCH_NAME }} does not exist."
 
-            BASE_BRANCH="master"  # 作成元のブランチを指定
+            BASE_BRANCH="main"
 
-            # 新しいブランチを作成
             git checkout -b ${{ env.BRANCH_NAME }} $BASE_BRANCH
-
-            # 新しいブランチをリモートリポジトリにプッシュ
-            git push origin $BRANCH_NAME
+            git push origin ${{ env.BRANCH_NAME }}
           fi
         shell: bash
