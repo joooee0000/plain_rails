@@ -21,23 +21,14 @@ jobs:
           if git show-ref --quiet "refs/heads/$(steps.check_branch.outputs.branch_name)"; then
             echo "Today Branch exists."
             echo "::set-output name=branch_exists::true"
-
-
-            BASE_BRANCH="main"  # 作成元のブランチを指定
-            BRANCH_NAME=${{ steps.check_branch.outputs.branch_name }}
-
-            echo $BRANCH_NAME
-
-            # 新しいブランチを作成
-            git checkout -b $BRANCH_NAME $BASE_BRANCH
-
-            # 新しいブランチをリモートリポジトリにプッシュ
-            git push origin $BRANCH_NAME
           else
             echo "Branch $BRANCH_NAME does not exist."
             echo "::set-output name=branch_exists::false"
 
             BASE_BRANCH="master"  # 作成元のブランチを指定
+            BRANCH_NAME=${{ steps.check_branch.outputs.branch_name }}
+
+            echo $BRANCH_NAME
 
             # 新しいブランチを作成
             git checkout -b $BRANCH_NAME $BASE_BRANCH
