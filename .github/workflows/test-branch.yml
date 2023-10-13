@@ -12,13 +12,13 @@ jobs:
       - name: Get Date
         id: date
         run: |
-          TODAY_BRANCH="dev-$(TZ=Asia/Tokyo date '+%m%d')"
-          echo "::set-output name=branch_name::$TODAY_BRANCH"
+          echo "BRANCH_NAME=dev-$(TZ=Asia/Tokyo date '+%m%d')" >> $GITHUB_ENV
         shell: bash
       - name: Check today Branch
         id: check_branch
         run: |
-          if git show-ref --quiet "refs/heads/$(steps.check_branch.outputs.branch_name)"; then
+          BRANCH_NAME=
+          if git show-ref --quiet "refs/heads/$BRANCH_NAME"; then
             echo "Today Branch exists."
             echo "::set-output name=branch_exists::true"
           else
@@ -26,7 +26,6 @@ jobs:
             echo "::set-output name=branch_exists::false"
 
             BASE_BRANCH="master"  # 作成元のブランチを指定
-            BRANCH_NAME=${{ steps.check_branch.outputs.branch_name }}
 
             echo $BRANCH_NAME
 
