@@ -4,19 +4,23 @@ on: workflow_dispatch
 
 jobs:
   MegeBranch:
-    - name: Check Out Repository
-      uses: actions/checkout@v4
-    - name: TargetBranch
-      run: |
-        git branch
-        echo "TARGET_BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-        echo $TARGET_BRANCH_NAME
-    - name: Get Date
-      id: date
-      run: |
-        echo "DEV_BRANCH_NAME=dev-$(TZ=Asia/Tokyo date '+%m%d')" >> $GITHUB_ENV
-        echo $DEV_BRANCH_NAME
-      shell: bash
-    - name: merge branch
-      run: |
-        git merge ${GITHUB_REF#refs/heads/}
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check Out Repository
+        uses: actions/checkout@v4
+      - name: TargetBranch
+        run: |
+          git branch
+          echo "TARGET_BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          echo $TARGET_BRANCH_NAME
+        shell: bash
+      - name: Get Date
+        id: date
+        run: |
+          echo "DEV_BRANCH_NAME=dev-$(TZ=Asia/Tokyo date '+%m%d')" >> $GITHUB_ENV
+          echo $DEV_BRANCH_NAME
+        shell: bash
+      - name: merge branch
+        run: |
+          git merge ${GITHUB_REF#refs/heads/}
+        shell: bash
