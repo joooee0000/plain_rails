@@ -10,8 +10,8 @@ jobs:
     timeout-minutes: 1
     runs-on: ubuntu-22.04
     steps:
-      - name: Check Out Repository
-        uses: actions/checkout@v2
+      #      - name: Check Out Repository
+      #        uses: actions/checkout@v2
       - name: Get Date
         id: date
         run: |
