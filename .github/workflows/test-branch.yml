@@ -1,9 +1,8 @@
 name: CreateDevBranchToday
 run-name: CreateDevBranchToday 🚀
-  #on:
-  #  schedule:
-  #    - cron: '0 0 * * *' # JST 00:00 (毎日)
-on: workflow_dispatch
+on:
+  schedule:
+    - cron: '0 0 * * *' # JST 00:00 (毎日)
 
 jobs:
   CreateBranch:
@@ -11,7 +10,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Check Out Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Fetch all branches and tags
         run: git fetch --prune --unshallow
       - name: Get Date
