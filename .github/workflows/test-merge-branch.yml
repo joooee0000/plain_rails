@@ -21,7 +21,8 @@ jobs:
           ref: ${{ env.DEV_BRANCH_NAME }}
       - name: merge branch
         run: |
-          git merge --no-ff --no-commit ${{ env.TARGET_BRANCH_NAME }}
+          git fetch --prune --unshallow
+          git merge --no-ff --no-commit origin/${{ env.TARGET_BRANCH_NAME }}
 
           if [[ -n $(git status --porcelain) ]]; then
             echo "Merge conflict detected. Aborting merge."
