@@ -6,11 +6,8 @@ jobs:
   MegeBranch:
     runs-on: ubuntu-22.04
     steps:
-      - name: Check Out Repository
-        uses: actions/checkout@v4
       - name: TargetBranch
         run: |
-          git branch
           echo "TARGET_BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
           echo $TARGET_BRANCH_NAME
         shell: bash
@@ -20,7 +17,18 @@ jobs:
           echo "DEV_BRANCH_NAME=dev-$(TZ=Asia/Tokyo date '+%m%d')" >> $GITHUB_ENV
           echo $DEV_BRANCH_NAME
         shell: bash
+      - name: Check Out Repository
+        uses: actions/checkout@v4
+        with:
+          ref: $DEV_BRANCH_NAME
       - name: merge branch
         run: |
-          git merge ${GITHUB_REF#refs/heads/}
+          git merge --no-ff --no-commit $TARGET_BRANCH_NAME
+
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "Merge conflict detected. Aborting merge."
+            git merge --abort
+          else
+            git commit -m "Merge target-branch into main"
+          fi
         shell: bash
