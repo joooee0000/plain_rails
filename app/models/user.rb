@@ -1,3 +1,3 @@
 class User < ApplicationRecord
-  TEST = "user"
+  TEST = "user-test"
 end
