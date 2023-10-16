@@ -1,0 +1,32 @@
+name: Start Merge To Dev Environment
+run-name: ${{ github.actor }} is Merging 🚀
+on: workflow_dispatch
+
+jobs:
+  MegeBranch:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: TargetBranch
+        run: |
+          echo "TARGET_BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+        shell: bash
+      - name: Get Date
+        id: date
+        run: |
+          echo "DEV_BRANCH_NAME=dev-$(TZ=Asia/Tokyo date '+%m%d')" >> $GITHUB_ENV
+        shell: bash
+      - name: Check Out Repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ env.DEV_BRANCH_NAME }}
+      - name: merge branch
+        run: |
+          git merge --no-ff --no-commit ${{ env.TARGET_BRANCH_NAME }}
+
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "Merge conflict detected. Aborting merge."
+            git merge --abort
+          else
+            git commit -m "Merge target-branch into main"
+          fi
+        shell: bash
