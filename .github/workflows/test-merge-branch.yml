@@ -9,21 +9,19 @@ jobs:
       - name: TargetBranch
         run: |
           echo "TARGET_BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-          echo $TARGET_BRANCH_NAME
         shell: bash
       - name: Get Date
         id: date
         run: |
           echo "DEV_BRANCH_NAME=dev-$(TZ=Asia/Tokyo date '+%m%d')" >> $GITHUB_ENV
-          echo $DEV_BRANCH_NAME
         shell: bash
       - name: Check Out Repository
         uses: actions/checkout@v4
         with:
-          ref: $DEV_BRANCH_NAME
+          ref: ${{ env.DEV_BRANCH_NAME }}
       - name: merge branch
         run: |
-          git merge --no-ff --no-commit $TARGET_BRANCH_NAME
+          git merge --no-ff --no-commit ${{ env.TARGET_BRANCH_NAME }}
 
           if [[ -n $(git status --porcelain) ]]; then
             echo "Merge conflict detected. Aborting merge."
