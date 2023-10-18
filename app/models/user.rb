@@ -3,4 +3,5 @@ class User < ApplicationRecord
 
   BBB = "hogehoge"
   CCC = "hogehgeo"
+  DDD = "conflict"
 end
