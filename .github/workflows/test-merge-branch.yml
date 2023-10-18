@@ -35,3 +35,5 @@ jobs:
             git commit -m "Merge target-branch into main"
           fi
         shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
