@@ -32,7 +32,8 @@ jobs:
             echo "Merge conflict detected. Aborting merge."
             git merge --abort
           else
-            git commit -m "Merge target-branch into main"
+            git commit -m "Merge target-branch"
+            git push origin `git rev-parse --abbrev-ref HEAD`
           fi
         shell: bash
         env:
