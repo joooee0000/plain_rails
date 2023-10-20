@@ -3,5 +3,6 @@ class User < ApplicationRecord
 
   BBB = "hogehoge"
   EEE = "fugafuga"
+  FFF = "ddddddd"
   DDD = "fugafuga"
 end
