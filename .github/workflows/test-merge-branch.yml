@@ -31,7 +31,7 @@ jobs:
           if [[ -n $(git status -s | grep "^UU" | awk '{print substr($0,4,1000)}') ]]; then
             echo "Merge conflict detected."
           else
-            git commit -m "Merge target-branch"
+            git commit -m "Auto Merge ${{ env.TARGET_BRANCH_NAME }}"
             git push origin `git rev-parse --abbrev-ref HEAD`
           fi
         shell: bash
