@@ -6,4 +6,5 @@ class User < ApplicationRecord
   FFF = "ddddddd"
   GGG = "hhhhhhh"
   DDD = "fugafuga"
+  HHH = "asdfghjk"
 end
