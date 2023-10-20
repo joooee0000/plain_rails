@@ -4,33 +4,30 @@ on: workflow_dispatch
 
 jobs:
   MegeBranch:
+    permissions:
+      issues: write
     runs-on: ubuntu-22.04
     steps:
-      - name: TargetBranch
+      - name: SetBranchEnv
         run: |
           echo "TARGET_BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-        shell: bash
-      - name: Get Date
-        id: date
-        run: |
           echo "DEV_BRANCH_NAME=dev-$(TZ=Asia/Tokyo date '+%m%d')" >> $GITHUB_ENV
         shell: bash
       - name: Check Out Repository
         uses: actions/checkout@v4
         with:
           ref: ${{ env.DEV_BRANCH_NAME }}
-      - name: Set Git Config
+      - name: MergeBranch
+        id: merge_branch
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-      - name: merge branch
-        run: |
+
           git fetch --prune --unshallow
           git merge --no-ff --no-commit origin/${{ env.TARGET_BRANCH_NAME }}
 
           if [[ -n $(git status -s | grep "^UU" | awk '{print substr($0,4,1000)}') ]]; then
-            echo "Merge conflict detected. Aborting merge."
-            git merge --abort
+            echo "Merge conflict detected."
           else
             git commit -m "Merge target-branch"
             git push origin `git rev-parse --abbrev-ref HEAD`
@@ -38,3 +35,35 @@ jobs:
         shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: NotfyToUser
+        if: failure()
+        run: |
+          echo "select slack user"
+          #  NotifyUser:
+          #    needs: MergeBranch
+          #    runs-on: ubuntu-22.04
+          #    steps:
+          #      - name: select mention user
+          #        id: slack
+          #        if: ${{ failure() }}
+          #        run: |
+          #          #SLACK_USER_ID=$(cat .github/workflows/slack_id_mapping.json | jq -r '."${{ github.actor }}"')
+          #          echo "select slack user"
+          #echo "slack_user_id=$SLACK_USER_ID" >> $GITHUB_OUTPUT
+          #      - name: Send Slack
+          #        id: slack
+          #        if: ${{ failure() }}
+          #        uses: slackapi/slack-github-action@v1.23.0
+          #        with:
+          #          payload: |
+          #            {
+          #              "text": "<@${{ steps.slack.outputs.slack_user_id }}> コンフリクトしました. ブランチ: base: ${{ env.DEV_BRANCH_NAME }}, target: ${{ env.TARGET_BRANCH_NAME  }}"
+          #            }
+          #        env:
+          #          SLACK_WEBHOOK_URL: ${{ secrets.DEV_DEPLOY_SLACK_INCOMING_WEBHOOK }}
+            #   Deploy:
+            #     needs: MergeBranch
+            #     runs-on: ubuntu-22.04
+            #     steps:
+            #       - name: Deploy
+            #         if: success() && steps.fail_step.outcome == 'failure'
