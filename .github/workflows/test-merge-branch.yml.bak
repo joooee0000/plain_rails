@@ -38,6 +38,35 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: NotfyToUser
         # https://docs.github.com/en/actions/learn-github-actions/expressions
+        #if: failure() && steps.merge_branch.conclusion == 'failure'
         run: |
           echo "select slack user"
         shell: bash
+          #  NotifyUser:
+          #    needs: MergeBranch
+          #    runs-on: ubuntu-22.04
+          #    steps:
+          #      - name: select mention user
+          #        id: slack
+          #        if: ${{ failure() }}
+          #        run: |
+          #          #SLACK_USER_ID=$(cat .github/workflows/slack_id_mapping.json | jq -r '."${{ github.actor }}"')
+          #          echo "select slack user"
+          #echo "slack_user_id=$SLACK_USER_ID" >> $GITHUB_OUTPUT
+          #      - name: Send Slack
+          #        id: slack
+          #        if: ${{ failure() }}
+          #        uses: slackapi/slack-github-action@v1.23.0
+          #        with:
+          #          payload: |
+          #            {
+          #              "text": "<@${{ steps.slack.outputs.slack_user_id }}> コンフリクトしました. ブランチ: base: ${{ env.DEV_BRANCH_NAME }}, target: ${{ env.TARGET_BRANCH_NAME  }}"
+          #            }
+          #        env:
+          #          SLACK_WEBHOOK_URL: ${{ secrets.DEV_DEPLOY_SLACK_INCOMING_WEBHOOK }}
+            #   Deploy:
+            #     needs: MergeBranch
+            #     runs-on: ubuntu-22.04
+            #     steps:
+            #       - name: Deploy
+            #         if: success() && steps.fail_step.outcome == 'failure'
