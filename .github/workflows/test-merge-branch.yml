@@ -36,7 +36,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: NotfyToUser
-        if: failure()
+        # https://docs.github.com/en/actions/learn-github-actions/expressions
+        if: ${{ failure() && steps.fail_step.merge_branch == 'failure' }}
         run: |
           echo "select slack user"
           #  NotifyUser:
