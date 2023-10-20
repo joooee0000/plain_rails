@@ -40,6 +40,7 @@ jobs:
         if: ${{ failure() && steps.fail_step.merge_branch == 'failure' }}
         run: |
           echo "select slack user"
+        shell: bash
           #  NotifyUser:
           #    needs: MergeBranch
           #    runs-on: ubuntu-22.04
