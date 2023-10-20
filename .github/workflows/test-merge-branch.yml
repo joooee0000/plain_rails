@@ -4,8 +4,8 @@ on: workflow_dispatch
 
 jobs:
   MegeBranch:
-    permissions:
-      issues: write
+    #    permissions:
+    #      issues: write
     runs-on: ubuntu-22.04
     steps:
       - name: SetBranchEnv
@@ -21,6 +21,7 @@ jobs:
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+        shell: bash
       - name: MergeBranch
         id: merge_branch
         run: |
