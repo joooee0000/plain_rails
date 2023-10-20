@@ -4,5 +4,7 @@ class User < ApplicationRecord
   BBB = "hogehoge"
   EEE = "fugafuga"
   FFF = "ddddddd"
+  GGG = "hhhhhhh"
   DDD = "fugafuga"
+  HHH = "asdfghjk"
 end
