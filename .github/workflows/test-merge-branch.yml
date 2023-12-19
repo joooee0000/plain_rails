@@ -37,17 +37,16 @@ jobs:
         id: slack
         if: ${{ failure() && steps.merge_branch.conclusion == 'failure' }}
         run: |
-          #SLACK_USER_ID=$(cat .github/workflows/slack_id.json | jq -r '."${{ github.actor }}"')
-          #echo "select slack user id: $SLACK_USER_ID"
-          #echo "slack_user_id=$SLACK_USER_ID" >> $GITHUB_OUTPUT
-          echo "dummy"
+          SLACK_USER_ID=$(cat .github/workflows/slack_id.json | jq -r '."${{ github.actor }}"')
+          echo "select slack user id: $SLACK_USER_ID"
+          echo "slack_user_id=$SLACK_USER_ID" >> $GITHUB_OUTPUT
       - name: notify conflict
         uses: slackapi/slack-github-action@v1.18.0
         if: ${{ failure() && steps.merge_branch.conclusion == 'failure' }}
         with:
           payload: |
             {
-              "text": "${{ env.TARGET_BRANCH_NAME }}が${{ env.DEV_BRANCH_NAME }}とコンフリクトしました."
+              "text": "<@${{ steps.slack.outputs.slack_user_id }}> ${{ env.TARGET_BRANCH_NAME }}が${{ env.DEV_BRANCH_NAME }}とコンフリクトしました."
             }
         env:
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
